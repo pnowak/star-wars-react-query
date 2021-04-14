@@ -5,6 +5,7 @@ import {
   Route,
   Link
 } from 'react-router-dom';
+import styled from 'styled-components';
 import FilmsPage from './films/FilmsPage';
 import PeoplePage from './people/PeoplePage';
 import PlanetsPage from './planets/PlanetsPage';
@@ -12,13 +13,40 @@ import SpeciesPage from './species/SpeciesPage';
 import StarshipsPage from './starships/StarshipsPage';
 import VehiclesPage from './vehicles/VehiclesPage';
 
+const NavStyles = styled.ul`
+  margin: 0;
+  padding: 0;
+  display: flex;
+  font-size: 2rem;
+  a,
+  li {
+    padding: 1rem 3rem;
+    display: flex;
+    align-items: center;
+    text-transform: uppercase;
+    font-weight: 900;
+    cursor: pointer;
+    &:hover,
+    &:focus {
+      outline: none;
+      text-decoration: none;
+      &:after {
+        width: calc(100% - 60px);
+      }
+      @media (max-width: 700px) {
+        width: calc(100% - 10px);
+      }
+    }
+  }
+`;
+
 function App() {
   return (
     <Router>
       <div>
         <header>
           <nav>
-            <ul>
+            <NavStyles>
               <li>
                 <Link to="/films">
                   <span>Films</span>
@@ -49,7 +77,7 @@ function App() {
                   <span>Vehicles</span>
                 </Link>
               </li>
-            </ul>
+            </NavStyles>
           </nav>
         </header>
 
