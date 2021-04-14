@@ -17,9 +17,9 @@ function PeopleList() {
 
     getData('https://swapi.dev/api/people')
 
-      .then(films => dispatch({
+      .then(people => dispatch({
         type: 'FETCH_PEOPLE_SUCCESS',
-        payload: films
+        payload: people
       }))
 
       .catch(error => {

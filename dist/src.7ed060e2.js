@@ -32345,10 +32345,10 @@ function PeopleList() {
     dispatch({
       type: 'FETCH_PEOPLE_REQUEST'
     });
-    (0, _api.getData)('https://swapi.dev/api/people').then(function (films) {
+    (0, _api.getData)('https://swapi.dev/api/people').then(function (people) {
       return dispatch({
         type: 'FETCH_PEOPLE_SUCCESS',
-        payload: films
+        payload: people
       });
     }).catch(function (error) {
       dispatch({
@@ -32398,7 +32398,579 @@ function PeoplePage() {
 
 var _default = PeoplePage;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","./PeopleList":"../src/people/PeopleList.js"}],"../src/App.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","./PeopleList":"../src/people/PeopleList.js"}],"../src/planets/reducer.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.reducer = reducer;
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'FETCH_PLANETS_REQUEST':
+      return _objectSpread(_objectSpread({}, state), {}, {
+        isLoading: true,
+        error: false,
+        planets: []
+      });
+
+    case 'FETCH_PLANETS_SUCCESS':
+      return _objectSpread(_objectSpread({}, state), {}, {
+        isLoading: false,
+        planets: action.payload
+      });
+
+    case 'FETCH_PLANETS_ERROR':
+      return _objectSpread(_objectSpread({}, state), {}, {
+        isLoading: false,
+        error: action.payload
+      });
+
+    default:
+      return state;
+  }
+}
+},{}],"../src/planets/PlanetsList.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _reducer = require("./reducer");
+
+var _api = require("../utils/api");
+
+var _Card = require("../utils/Card");
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+var initialState = {
+  planets: [],
+  isLoading: true,
+  error: false
+};
+
+function PlanetsList() {
+  var _useReducer = (0, _react.useReducer)(_reducer.reducer, initialState),
+      _useReducer2 = _slicedToArray(_useReducer, 2),
+      _useReducer2$ = _useReducer2[0],
+      planets = _useReducer2$.planets,
+      isLoading = _useReducer2$.isLoading,
+      error = _useReducer2$.error,
+      dispatch = _useReducer2[1];
+
+  (0, _react.useEffect)(function () {
+    dispatch({
+      type: 'FETCH_PLANETS_REQUEST'
+    });
+    (0, _api.getData)('https://swapi.dev/api/planets').then(function (planets) {
+      return dispatch({
+        type: 'FETCH_PLANETS_SUCCESS',
+        payload: planets
+      });
+    }).catch(function (error) {
+      dispatch({
+        type: 'FETCH_PLANETS_ERROR',
+        payload: error
+      });
+    });
+  }, []);
+
+  if (error) {
+    return /*#__PURE__*/_react.default.createElement("p", null, error.message);
+  }
+
+  if (isLoading) {
+    return /*#__PURE__*/_react.default.createElement("p", null, "Loading planets...");
+  }
+
+  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("ul", null, planets.results.map(function (planet) {
+    return /*#__PURE__*/_react.default.createElement("li", {
+      key: planet.created
+    }, /*#__PURE__*/_react.default.createElement(_Card.Card, {
+      category: "planets",
+      name: planet.name
+    }));
+  })));
+}
+
+var _default = PlanetsList;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","./reducer":"../src/planets/reducer.js","../utils/api":"../src/utils/api.js","../utils/Card":"../src/utils/Card.js"}],"../src/planets/PlanetsPage.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _PlanetsList = _interopRequireDefault(require("./PlanetsList"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function PlanetsPage() {
+  return /*#__PURE__*/_react.default.createElement("main", null, /*#__PURE__*/_react.default.createElement(_PlanetsList.default, null));
+}
+
+var _default = PlanetsPage;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","./PlanetsList":"../src/planets/PlanetsList.js"}],"../src/species/reducer.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.reducer = reducer;
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'FETCH_SPECIES_REQUEST':
+      return _objectSpread(_objectSpread({}, state), {}, {
+        isLoading: true,
+        error: false,
+        species: []
+      });
+
+    case 'FETCH_SPECIES_SUCCESS':
+      return _objectSpread(_objectSpread({}, state), {}, {
+        isLoading: false,
+        species: action.payload
+      });
+
+    case 'FETCH_SPECIES_ERROR':
+      return _objectSpread(_objectSpread({}, state), {}, {
+        isLoading: false,
+        error: action.payload
+      });
+
+    default:
+      return state;
+  }
+}
+},{}],"../src/species/SpeciesList.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _reducer = require("./reducer");
+
+var _api = require("../utils/api");
+
+var _Card = require("../utils/Card");
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+var initialState = {
+  species: [],
+  isLoading: true,
+  error: false
+};
+
+function SpeciesList() {
+  var _useReducer = (0, _react.useReducer)(_reducer.reducer, initialState),
+      _useReducer2 = _slicedToArray(_useReducer, 2),
+      _useReducer2$ = _useReducer2[0],
+      species = _useReducer2$.species,
+      isLoading = _useReducer2$.isLoading,
+      error = _useReducer2$.error,
+      dispatch = _useReducer2[1];
+
+  (0, _react.useEffect)(function () {
+    dispatch({
+      type: 'FETCH_SPECIES_REQUEST'
+    });
+    (0, _api.getData)('https://swapi.dev/api/planets').then(function (species) {
+      return dispatch({
+        type: 'FETCH_SPECIES_SUCCESS',
+        payload: species
+      });
+    }).catch(function (error) {
+      dispatch({
+        type: 'FETCH_SPECIES_ERROR',
+        payload: error
+      });
+    });
+  }, []);
+
+  if (error) {
+    return /*#__PURE__*/_react.default.createElement("p", null, error.message);
+  }
+
+  if (isLoading) {
+    return /*#__PURE__*/_react.default.createElement("p", null, "Loading species...");
+  }
+
+  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("ul", null, species.results.map(function (specie) {
+    return /*#__PURE__*/_react.default.createElement("li", {
+      key: specie.created
+    }, /*#__PURE__*/_react.default.createElement(_Card.Card, {
+      category: "species",
+      name: specie.name
+    }));
+  })));
+}
+
+var _default = SpeciesList;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","./reducer":"../src/species/reducer.js","../utils/api":"../src/utils/api.js","../utils/Card":"../src/utils/Card.js"}],"../src/species/SpeciesPage.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _SpeciesList = _interopRequireDefault(require("./SpeciesList"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function SpeciesPage() {
+  return /*#__PURE__*/_react.default.createElement("main", null, /*#__PURE__*/_react.default.createElement(_SpeciesList.default, null));
+}
+
+var _default = SpeciesPage;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","./SpeciesList":"../src/species/SpeciesList.js"}],"../src/starships/reducer.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.reducer = reducer;
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'FETCH_STARSHIPS_REQUEST':
+      return _objectSpread(_objectSpread({}, state), {}, {
+        isLoading: true,
+        error: false,
+        starships: []
+      });
+
+    case 'FETCH_STARSHIPS_SUCCESS':
+      return _objectSpread(_objectSpread({}, state), {}, {
+        isLoading: false,
+        starships: action.payload
+      });
+
+    case 'FETCH_STARSHIPS_ERROR':
+      return _objectSpread(_objectSpread({}, state), {}, {
+        isLoading: false,
+        error: action.payload
+      });
+
+    default:
+      return state;
+  }
+}
+},{}],"../src/starships/StarshipsList.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _reducer = require("./reducer");
+
+var _api = require("../utils/api");
+
+var _Card = require("../utils/Card");
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+var initialState = {
+  starships: [],
+  isLoading: true,
+  error: false
+};
+
+function StarshipsList() {
+  var _useReducer = (0, _react.useReducer)(_reducer.reducer, initialState),
+      _useReducer2 = _slicedToArray(_useReducer, 2),
+      _useReducer2$ = _useReducer2[0],
+      starships = _useReducer2$.starships,
+      isLoading = _useReducer2$.isLoading,
+      error = _useReducer2$.error,
+      dispatch = _useReducer2[1];
+
+  (0, _react.useEffect)(function () {
+    dispatch({
+      type: 'FETCH_STARSHIPS_REQUEST'
+    });
+    (0, _api.getData)('https://swapi.dev/api/planets').then(function (starships) {
+      return dispatch({
+        type: 'FETCH_STARSHIPS_SUCCESS',
+        payload: starships
+      });
+    }).catch(function (error) {
+      dispatch({
+        type: 'FETCH_STARSHIPS_ERROR',
+        payload: error
+      });
+    });
+  }, []);
+
+  if (error) {
+    return /*#__PURE__*/_react.default.createElement("p", null, error.message);
+  }
+
+  if (isLoading) {
+    return /*#__PURE__*/_react.default.createElement("p", null, "Loading starships...");
+  }
+
+  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("ul", null, starships.results.map(function (starship) {
+    return /*#__PURE__*/_react.default.createElement("li", {
+      key: starship.created
+    }, /*#__PURE__*/_react.default.createElement(_Card.Card, {
+      category: "starships",
+      name: starship.name
+    }));
+  })));
+}
+
+var _default = StarshipsList;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","./reducer":"../src/starships/reducer.js","../utils/api":"../src/utils/api.js","../utils/Card":"../src/utils/Card.js"}],"../src/starships/StarshipsPage.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _StarshipsList = _interopRequireDefault(require("./StarshipsList"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function StarshipsPage() {
+  return /*#__PURE__*/_react.default.createElement("main", null, /*#__PURE__*/_react.default.createElement(_StarshipsList.default, null));
+}
+
+var _default = StarshipsPage;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","./StarshipsList":"../src/starships/StarshipsList.js"}],"../src/vehicles/reducer.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.reducer = reducer;
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'FETCH_VEHICLES_REQUEST':
+      return _objectSpread(_objectSpread({}, state), {}, {
+        isLoading: true,
+        error: false,
+        vehicles: []
+      });
+
+    case 'FETCH_VEHICLES_SUCCESS':
+      return _objectSpread(_objectSpread({}, state), {}, {
+        isLoading: false,
+        vehicles: action.payload
+      });
+
+    case 'FETCH_VEHICLES_ERROR':
+      return _objectSpread(_objectSpread({}, state), {}, {
+        isLoading: false,
+        error: action.payload
+      });
+
+    default:
+      return state;
+  }
+}
+},{}],"../src/vehicles/VehiclesList.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _reducer = require("./reducer");
+
+var _api = require("../utils/api");
+
+var _Card = require("../utils/Card");
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+var initialState = {
+  vehicles: [],
+  isLoading: true,
+  error: false
+};
+
+function VehiclesList() {
+  var _useReducer = (0, _react.useReducer)(_reducer.reducer, initialState),
+      _useReducer2 = _slicedToArray(_useReducer, 2),
+      _useReducer2$ = _useReducer2[0],
+      vehicles = _useReducer2$.vehicles,
+      isLoading = _useReducer2$.isLoading,
+      error = _useReducer2$.error,
+      dispatch = _useReducer2[1];
+
+  (0, _react.useEffect)(function () {
+    dispatch({
+      type: 'FETCH_VEHICLES_REQUEST'
+    });
+    (0, _api.getData)('https://swapi.dev/api/planets').then(function (vehicles) {
+      return dispatch({
+        type: 'FETCH_VEHICLES_SUCCESS',
+        payload: vehicles
+      });
+    }).catch(function (error) {
+      dispatch({
+        type: 'FETCH_VEHICLES_ERROR',
+        payload: error
+      });
+    });
+  }, []);
+
+  if (error) {
+    return /*#__PURE__*/_react.default.createElement("p", null, error.message);
+  }
+
+  if (isLoading) {
+    return /*#__PURE__*/_react.default.createElement("p", null, "Loading vehicles...");
+  }
+
+  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("ul", null, vehicles.results.map(function (vehicle) {
+    return /*#__PURE__*/_react.default.createElement("li", {
+      key: vehicle.created
+    }, /*#__PURE__*/_react.default.createElement(_Card.Card, {
+      category: "vehicles",
+      name: vehicle.name
+    }));
+  })));
+}
+
+var _default = VehiclesList;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","./reducer":"../src/vehicles/reducer.js","../utils/api":"../src/utils/api.js","../utils/Card":"../src/utils/Card.js"}],"../src/vehicles/VehiclesPage.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _VehiclesList = _interopRequireDefault(require("./VehiclesList"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function VehiclesPage() {
+  return /*#__PURE__*/_react.default.createElement("main", null, /*#__PURE__*/_react.default.createElement(_VehiclesList.default, null));
+}
+
+var _default = VehiclesPage;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","./VehiclesList":"../src/vehicles/VehiclesList.js"}],"../src/App.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -32414,6 +32986,14 @@ var _FilmsPage = _interopRequireDefault(require("./films/FilmsPage"));
 
 var _PeoplePage = _interopRequireDefault(require("./people/PeoplePage"));
 
+var _PlanetsPage = _interopRequireDefault(require("./planets/PlanetsPage"));
+
+var _SpeciesPage = _interopRequireDefault(require("./species/SpeciesPage"));
+
+var _StarshipsPage = _interopRequireDefault(require("./starships/StarshipsPage"));
+
+var _VehiclesPage = _interopRequireDefault(require("./vehicles/VehiclesPage"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function App() {
@@ -32421,18 +33001,38 @@ function App() {
     to: "/films"
   }, /*#__PURE__*/_react.default.createElement("span", null, "Films"))), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
     to: "/people"
-  }, /*#__PURE__*/_react.default.createElement("span", null, "People")))))), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Routes, null, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
+  }, /*#__PURE__*/_react.default.createElement("span", null, "People"))), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
+    to: "/planets"
+  }, /*#__PURE__*/_react.default.createElement("span", null, "Planets"))), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
+    to: "/species"
+  }, /*#__PURE__*/_react.default.createElement("span", null, "Species"))), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
+    to: "/starships"
+  }, /*#__PURE__*/_react.default.createElement("span", null, "Starships"))), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
+    to: "/vehicles"
+  }, /*#__PURE__*/_react.default.createElement("span", null, "Vehicles")))))), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Routes, null, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
     path: "/films",
     element: /*#__PURE__*/_react.default.createElement(_FilmsPage.default, null)
   }), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
     path: "/people",
     element: /*#__PURE__*/_react.default.createElement(_PeoplePage.default, null)
+  }), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
+    path: "/planets",
+    element: /*#__PURE__*/_react.default.createElement(_PlanetsPage.default, null)
+  }), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
+    path: "/species",
+    element: /*#__PURE__*/_react.default.createElement(_SpeciesPage.default, null)
+  }), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
+    path: "/starships",
+    element: /*#__PURE__*/_react.default.createElement(_StarshipsPage.default, null)
+  }), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
+    path: "/vehicles",
+    element: /*#__PURE__*/_react.default.createElement(_VehiclesPage.default, null)
   }))));
 }
 
 var _default = App;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/index.js","./films/FilmsPage":"../src/films/FilmsPage.js","./people/PeoplePage":"../src/people/PeoplePage.js"}],"../src/index.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/index.js","./films/FilmsPage":"../src/films/FilmsPage.js","./people/PeoplePage":"../src/people/PeoplePage.js","./planets/PlanetsPage":"../src/planets/PlanetsPage.js","./species/SpeciesPage":"../src/species/SpeciesPage.js","./starships/StarshipsPage":"../src/starships/StarshipsPage.js","./vehicles/VehiclesPage":"../src/vehicles/VehiclesPage.js"}],"../src/index.js":[function(require,module,exports) {
 "use strict";
 
 var _react = _interopRequireDefault(require("react"));
@@ -32472,7 +33072,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53133" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49606" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
