@@ -4,27 +4,27 @@ import { getData } from '../utils/api';
 import { Card } from '../utils/Card';
 
 const initialState = {
-  films: [],
+  people: [],
   isLoading: true,
   error: false
 };
 
-function FilmsList() {
-  const [{films, isLoading, error}, dispatch] = useReducer(reducer, initialState);
+function PeopleList() {
+  const [{people, isLoading, error}, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
-    dispatch({type: 'FETCH_FILMS_REQUEST'});
+    dispatch({type: 'FETCH_PEOPLE_REQUEST'});
 
-    getData('https://swapi.dev/api/films')
+    getData('https://swapi.dev/api/people')
 
       .then(films => dispatch({
-        type: 'FETCH_FILMS_SUCCESS',
+        type: 'FETCH_PEOPLE_SUCCESS',
         payload: films
       }))
 
       .catch(error => {
         dispatch({
-            type: 'FETCH_FILMS_ERROR',
+            type: 'FETCH_PEOPLE_ERROR',
             payload: error
         })
       });
@@ -36,15 +36,15 @@ function FilmsList() {
   }
 
   if (isLoading) {
-    return <p>Loading films...</p>
+    return <p>Loading people...</p>
   }
 
   return (
     <>
       <ul>
-        {films.results.map((film) => (
-          <li key={film.created}>
-            <Card category='films' name={film.title} />
+        {people.results.map((human) => (
+          <li key={human.created}>
+            <Card category='people' name={human.name} />
           </li>
         ))}
       </ul>
@@ -52,4 +52,4 @@ function FilmsList() {
   );
 }
 
-export default FilmsList;
+export default PeopleList;

@@ -4,7 +4,7 @@ import FilmsList from './FilmsList';
 function FilmsPage() {
   return (
     <main>
-      <FilmsList/>
+      <FilmsList />
     </main>
   );
 }

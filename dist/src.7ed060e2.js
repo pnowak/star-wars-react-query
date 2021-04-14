@@ -32132,7 +32132,26 @@ function getData(url) {
     return res.json();
   });
 }
-},{}],"../src/films/FilmsList.js":[function(require,module,exports) {
+},{}],"../src/utils/Card.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Card = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Card = function Card(_ref) {
+  var category = _ref.category,
+      name = _ref.name;
+  return /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("p", null, name), /*#__PURE__*/_react.default.createElement("span", null, category));
+};
+
+exports.Card = Card;
+},{"react":"../node_modules/react/index.js"}],"../src/films/FilmsList.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -32145,6 +32164,8 @@ var _react = _interopRequireWildcard(require("react"));
 var _reducer = require("./reducer");
 
 var _api = require("../utils/api");
+
+var _Card = require("../utils/Card");
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
@@ -32166,12 +32187,6 @@ var initialState = {
   films: [],
   isLoading: true,
   error: false
-};
-
-var Card = function Card(_ref) {
-  var category = _ref.category,
-      name = _ref.name;
-  return /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("p", null, name), /*#__PURE__*/_react.default.createElement("span", null, category));
 };
 
 function FilmsList() {
@@ -32211,7 +32226,7 @@ function FilmsList() {
   return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("ul", null, films.results.map(function (film) {
     return /*#__PURE__*/_react.default.createElement("li", {
       key: film.created
-    }, /*#__PURE__*/_react.default.createElement(Card, {
+    }, /*#__PURE__*/_react.default.createElement(_Card.Card, {
       category: "films",
       name: film.title
     }));
@@ -32220,7 +32235,7 @@ function FilmsList() {
 
 var _default = FilmsList;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","./reducer":"../src/films/reducer.js","../utils/api":"../src/utils/api.js"}],"../src/films/FilmsPage.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","./reducer":"../src/films/reducer.js","../utils/api":"../src/utils/api.js","../utils/Card":"../src/utils/Card.js"}],"../src/films/FilmsPage.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -32240,7 +32255,150 @@ function FilmsPage() {
 
 var _default = FilmsPage;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","./FilmsList":"../src/films/FilmsList.js"}],"../src/App.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","./FilmsList":"../src/films/FilmsList.js"}],"../src/people/reducer.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.reducer = reducer;
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'FETCH_PEOPLE_REQUEST':
+      return _objectSpread(_objectSpread({}, state), {}, {
+        isLoading: true,
+        error: false,
+        people: []
+      });
+
+    case 'FETCH_PEOPLE_SUCCESS':
+      return _objectSpread(_objectSpread({}, state), {}, {
+        isLoading: false,
+        people: action.payload
+      });
+
+    case 'FETCH_PEOPLE_ERROR':
+      return _objectSpread(_objectSpread({}, state), {}, {
+        isLoading: false,
+        error: action.payload
+      });
+
+    default:
+      return state;
+  }
+}
+},{}],"../src/people/PeopleList.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _reducer = require("./reducer");
+
+var _api = require("../utils/api");
+
+var _Card = require("../utils/Card");
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+var initialState = {
+  people: [],
+  isLoading: true,
+  error: false
+};
+
+function PeopleList() {
+  var _useReducer = (0, _react.useReducer)(_reducer.reducer, initialState),
+      _useReducer2 = _slicedToArray(_useReducer, 2),
+      _useReducer2$ = _useReducer2[0],
+      people = _useReducer2$.people,
+      isLoading = _useReducer2$.isLoading,
+      error = _useReducer2$.error,
+      dispatch = _useReducer2[1];
+
+  (0, _react.useEffect)(function () {
+    dispatch({
+      type: 'FETCH_PEOPLE_REQUEST'
+    });
+    (0, _api.getData)('https://swapi.dev/api/people').then(function (films) {
+      return dispatch({
+        type: 'FETCH_PEOPLE_SUCCESS',
+        payload: films
+      });
+    }).catch(function (error) {
+      dispatch({
+        type: 'FETCH_PEOPLE_ERROR',
+        payload: error
+      });
+    });
+  }, []);
+
+  if (error) {
+    return /*#__PURE__*/_react.default.createElement("p", null, error.message);
+  }
+
+  if (isLoading) {
+    return /*#__PURE__*/_react.default.createElement("p", null, "Loading people...");
+  }
+
+  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("ul", null, people.results.map(function (human) {
+    return /*#__PURE__*/_react.default.createElement("li", {
+      key: human.created
+    }, /*#__PURE__*/_react.default.createElement(_Card.Card, {
+      category: "people",
+      name: human.name
+    }));
+  })));
+}
+
+var _default = PeopleList;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","./reducer":"../src/people/reducer.js","../utils/api":"../src/utils/api.js","../utils/Card":"../src/utils/Card.js"}],"../src/people/PeoplePage.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _PeopleList = _interopRequireDefault(require("./PeopleList"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function PeoplePage() {
+  return /*#__PURE__*/_react.default.createElement("main", null, /*#__PURE__*/_react.default.createElement(_PeopleList.default, null));
+}
+
+var _default = PeoplePage;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","./PeopleList":"../src/people/PeopleList.js"}],"../src/App.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -32254,20 +32412,27 @@ var _reactRouterDom = require("react-router-dom");
 
 var _FilmsPage = _interopRequireDefault(require("./films/FilmsPage"));
 
+var _PeoplePage = _interopRequireDefault(require("./people/PeoplePage"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function App() {
   return /*#__PURE__*/_react.default.createElement(_reactRouterDom.BrowserRouter, null, /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("nav", null, /*#__PURE__*/_react.default.createElement("ul", null, /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
     to: "/films"
-  }, /*#__PURE__*/_react.default.createElement("span", null, "Films")))))), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Routes, null, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
+  }, /*#__PURE__*/_react.default.createElement("span", null, "Films"))), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
+    to: "/people"
+  }, /*#__PURE__*/_react.default.createElement("span", null, "People")))))), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Routes, null, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
     path: "/films",
     element: /*#__PURE__*/_react.default.createElement(_FilmsPage.default, null)
+  }), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
+    path: "/people",
+    element: /*#__PURE__*/_react.default.createElement(_PeoplePage.default, null)
   }))));
 }
 
 var _default = App;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/index.js","./films/FilmsPage":"../src/films/FilmsPage.js"}],"../src/index.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/index.js","./films/FilmsPage":"../src/films/FilmsPage.js","./people/PeoplePage":"../src/people/PeoplePage.js"}],"../src/index.js":[function(require,module,exports) {
 "use strict";
 
 var _react = _interopRequireDefault(require("react"));
