@@ -2,6 +2,7 @@ import React, {useReducer, useEffect} from 'react';
 import { reducer } from './reducer'
 import { getData } from '../utils/api';
 import { Card } from '../utils/Card';
+import { GridStyles } from '../styles/GridStyles';
 
 const initialState = {
   starships: [],
@@ -41,13 +42,11 @@ function StarshipsList() {
 
   return (
     <>
-      <ul>
+      <GridStyles>
         {starships.results.map((starship) => (
-          <li key={starship.created}>
-            <Card category='starships' name={starship.name} />
-          </li>
+          <Card key={starship.created} category='starships' name={starship.name} />
         ))}
-      </ul>
+      </GridStyles>
     </>
   );
 }

@@ -2,6 +2,7 @@ import React, {useReducer, useEffect} from 'react';
 import { reducer } from './reducer'
 import { getData } from '../utils/api';
 import { Card } from '../utils/Card';
+import { GridStyles } from '../styles/GridStyles';
 
 const initialState = {
   planets: [],
@@ -41,13 +42,11 @@ function PlanetsList() {
 
   return (
     <>
-      <ul>
+      <GridStyles>
         {planets.results.map((planet) => (
-          <li key={planet.created}>
-            <Card category='planets' name={planet.name} />
-          </li>
+          <Card key={planet.created} category='planets' name={planet.name} />
         ))}
-      </ul>
+      </GridStyles>
     </>
   );
 }

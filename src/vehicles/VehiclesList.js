@@ -2,6 +2,7 @@ import React, {useReducer, useEffect} from 'react';
 import { reducer } from './reducer'
 import { getData } from '../utils/api';
 import { Card } from '../utils/Card';
+import { GridStyles } from '../styles/GridStyles';
 
 const initialState = {
   vehicles: [],
@@ -41,13 +42,11 @@ function VehiclesList() {
 
   return (
     <>
-      <ul>
+      <GridStyles>
         {vehicles.results.map((vehicle) => (
-          <li key={vehicle.created}>
-            <Card category='vehicles' name={vehicle.name} />
-          </li>
+          <Card key={vehicle.created} category='vehicles' name={vehicle.name} />
         ))}
-      </ul>
+      </GridStyles>
     </>
   );
 }

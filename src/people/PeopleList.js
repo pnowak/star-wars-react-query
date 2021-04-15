@@ -2,6 +2,7 @@ import React, {useReducer, useEffect} from 'react';
 import { reducer } from './reducer'
 import { getData } from '../utils/api';
 import { Card } from '../utils/Card';
+import { GridStyles } from '../styles/GridStyles';
 
 const initialState = {
   people: [],
@@ -41,13 +42,11 @@ function PeopleList() {
 
   return (
     <>
-      <ul>
+      <GridStyles>
         {people.results.map((human) => (
-          <li key={human.created}>
-            <Card category='people' name={human.name} />
-          </li>
+          <Card key={human.created} category='people' name={human.name} />
         ))}
-      </ul>
+      </GridStyles>
     </>
   );
 }

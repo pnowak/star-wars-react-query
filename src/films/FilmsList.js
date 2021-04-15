@@ -2,6 +2,7 @@ import React, {useReducer, useEffect} from 'react';
 import { reducer } from './reducer'
 import { getData } from '../utils/api';
 import { Card } from '../utils/Card';
+import { GridStyles } from '../styles/GridStyles';
 
 const initialState = {
   films: [],
@@ -41,13 +42,11 @@ function FilmsList() {
 
   return (
     <>
-      <ul>
+      <GridStyles>
         {films.results.map((film) => (
-          <li key={film.created}>
-            <Card category='films' name={film.title} />
-          </li>
+          <Card key={film.created} category='films' name={film.title} />
         ))}
-      </ul>
+      </GridStyles>
     </>
   );
 }
